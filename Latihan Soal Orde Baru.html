@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Orde Baru Indonesia 1966-1998</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 50%, #e5e7eb 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px rgba(220, 38, 38, 0.1);
+        }
+        .quiz-transition {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen py-8">
+    <div class="container mx-auto px-4 max-w-4xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-red-800 mb-2">Latihan Soal Sejarah Indonesia</h1>
+            <p class="text-xl text-red-600">Perkembangan Politik dan Ekonomi Masa Orde Baru (1966-1998)</p>
+        </div>
+
+        <!-- Student Info Form -->
+        <div id="studentForm" class="bg-white rounded-xl card-shadow p-8 mb-8">
+            <h2 class="text-2xl font-bold text-red-800 mb-6 text-center">📝 Data Siswa</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-red-700 font-semibold mb-2">Nama Lengkap</label>
+                    <input type="text" id="studentName" class="w-full px-4 py-3 border-2 border-red-200 rounded-lg focus:border-red-500 focus:outline-none" placeholder="Masukkan nama lengkap Anda">
+                </div>
+                <div>
+                    <label class="block text-red-700 font-semibold mb-2">Kelas</label>
+                    <input type="text" id="studentClass" class="w-full px-4 py-3 border-2 border-red-200 rounded-lg focus:border-red-500 focus:outline-none" placeholder="Masukkan kelas Anda">
+                </div>
+            </div>
+            <button onclick="startQuiz()" class="w-full mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                🚀 Mulai
+            </button>
+        </div>
+
+        <!-- Quiz Container -->
+        <div id="quizContainer" class="hidden">
+            <div class="bg-white rounded-xl card-shadow p-8 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold text-red-800">Soal <span id="currentQuestion">1</span> dari 10</h3>
+                    <div class="bg-red-100 px-4 py-2 rounded-full">
+                        <span class="text-red-800 font-semibold">⏱️ <span id="timer">30</span>s</span>
+                    </div>
+                </div>
+                
+                <div class="w-full bg-red-200 rounded-full h-2 mb-6">
+                    <div id="progressBar" class="bg-red-600 h-2 rounded-full transition-all duration-300" style="width: 10%"></div>
+                </div>
+
+                <div id="questionContainer" class="mb-6">
+                    <!-- Questions will be loaded here -->
+                </div>
+
+                <div id="optionsContainer" class="space-y-3 mb-6">
+                    <!-- Options will be loaded here -->
+                </div>
+
+                <button id="nextButton" onclick="nextQuestion()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors disabled:bg-gray-400" disabled>
+                    Lanjut
+                </button>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="resultsContainer" class="hidden bg-white rounded-xl card-shadow p-8">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-red-800 mb-4">🎉 Hasil Kuis</h2>
+                <div class="bg-red-50 rounded-lg p-6 mb-6">
+                    <p class="text-lg text-red-700 mb-2"><strong>Nama:</strong> <span id="finalName"></span></p>
+                    <p class="text-lg text-red-700 mb-2"><strong>Kelas:</strong> <span id="finalClass"></span></p>
+                    <p class="text-2xl font-bold text-red-800"><strong>Nilai:</strong> <span id="finalScore"></span>/100</p>
+                </div>
+            </div>
+
+            <div class="flex gap-4 mb-6">
+                <button id="showDiscussionBtn" onclick="toggleDiscussion()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                    📚 Lihat Pembahasan
+                </button>
+                <button onclick="restartQuiz()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                    🔄 Ulangi Kuis
+                </button>
+            </div>
+
+            <div id="reviewContainer" class="hidden">
+                <h3 class="text-2xl font-bold text-red-800 mb-6">📚 Pembahasan Soal</h3>
+                <div id="reviewQuestions" class="space-y-6">
+                    <!-- Review will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Sebutkan isi dari TRITURA (Tiga Tuntutan Rakyat)!",
+                options: [
+                    "Tiga Tuntutan Rakyat: Bubarkan PKI, Rombak Kabinet Dwikora, Turunkan Harga",
+                    "Tiga Tuntutan Rakyat: Bubarkan PKI, Turunkan Soekarno, Bersihkan kabinet",
+                    "Tiga Tuntutan Rakyat: Bubarkan Gestapu, Turunkan Soekarno, Ganti kabinet",
+                    "Tiga Tuntutan Rakyat: Bubarkan komunis, Turunkan harga, Bersihkan kabinet",
+                    "Tiga Tuntutan Rakyat: Bubarkan Gestapu, Rombak kabinet, Turunkan harga"
+                ],
+                correct: 0,
+                explanation: "TRITURA adalah Tiga Tuntutan Rakyat yang berisi: 1) Bubarkan PKI, 2) Rombak Kabinet Dwikora, 3) Turunkan Harga. Tuntutan ini muncul dari demonstrasi mahasiswa tahun 1966 sebagai respons terhadap situasi politik dan ekonomi yang tidak stabil."
+            },
+            {
+                question: "Surat Perintah Sebelas Maret (Supersemar) ditandatangani pada tanggal?",
+                options: [
+                    "11 Maret 1965",
+                    "11 Maret 1966",
+                    "11 Maret 1967",
+                    "11 Maret 1968",
+                    "11 Maret 1969"
+                ],
+                correct: 1,
+                explanation: "Supersemar ditandatangani pada 11 Maret 1966 oleh Presiden Soekarno yang memberikan kewenangan kepada Letjen Soeharto untuk mengambil tindakan yang dianggap perlu demi keamanan dan stabilitas negara."
+            },
+            {
+                question: "Dualisme kepemimpinan nasional pada masa transisi Orde Lama ke Orde Baru terjadi antara?",
+                options: [
+                    "Soekarno dan Hatta",
+                    "Soekarno dan Soeharto",
+                    "Soeharto dan Nasution",
+                    "Soekarno dan Nasution",
+                    "Hatta dan Soeharto"
+                ],
+                correct: 1,
+                explanation: "Dualisme kepemimpinan terjadi antara Presiden Soekarno (masih menjabat) dan Letjen Soeharto (pemegang Supersemar) pada periode 1966-1967, hingga Soeharto resmi menjadi Presiden."
+            },
+            {
+                question: "Penyederhanaan partai politik pada masa Orde Baru menghasilkan berapa partai politik?",
+                options: [
+                    "2 partai",
+                    "3 partai",
+                    "4 partai",
+                    "5 partai",
+                    "6 partai"
+                ],
+                correct: 1,
+                explanation: "Penyederhanaan partai politik (fusi partai) pada 1973 menghasilkan 3 kekuatan politik: Golkar, PPP (gabungan partai Islam), dan PDI (gabungan partai nasionalis dan Kristen)."
+            },
+            {
+                question: "Dwifungsi ABRI pada masa Orde Baru memiliki fungsi sebagai?",
+                options: [
+                    "Kekuatan pertahanan dan keamanan",
+                    "Kekuatan sosial dan politik",
+                    "Kekuatan pertahanan-keamanan dan sosial-politik",
+                    "Kekuatan militer dan ekonomi",
+                    "Kekuatan hukum dan ketertiban"
+                ],
+                correct: 2,
+                explanation: "Dwifungsi ABRI adalah konsep yang menetapkan TNI memiliki dua fungsi: sebagai kekuatan pertahanan-keamanan dan sebagai kekuatan sosial-politik, yang memungkinkan militer terlibat dalam pemerintahan sipil."
+            },
+            {
+                question: "P4 (Pedoman Penghayatan dan Pengamalan Pancasila) bertujuan untuk?",
+                options: [
+                    "Meningkatkan ekonomi rakyat",
+                    "Indoktrinasi ideologi Pancasila",
+                    "Memperkuat pertahanan negara",
+                    "Mengembangkan pendidikan nasional",
+                    "Meningkatkan kesejahteraan sosial"
+                ],
+                correct: 1,
+                explanation: "P4 adalah program indoktrinasi untuk menanamkan pemahaman dan pengamalan Pancasila kepada seluruh lapisan masyarakat, terutama PNS, mahasiswa, dan pelajar sebagai upaya pembentukan karakter bangsa."
+            },
+            {
+                question: "NKK/BKK (Normalisasi Kehidupan Kampus/Badan Koordinasi Kemahasiswaan) diberlakukan untuk?",
+                options: [
+                    "Meningkatkan kualitas pendidikan",
+                    "Mengontrol aktivitas politik mahasiswa",
+                    "Mengembangkan riset universitas",
+                    "Memperluas akses pendidikan tinggi",
+                    "Meningkatkan fasilitas kampus"
+                ],
+                correct: 1,
+                explanation: "NKK/BKK diberlakukan pada 1978 untuk mengendalikan dan membatasi aktivitas politik mahasiswa di kampus, memisahkan kegiatan akademik dari politik, dan mencegah demonstrasi mahasiswa."
+            },
+            {
+                question: "Normalisasi hubungan diplomatik Indonesia dengan Malaysia dan Singapura terjadi pada tahun?",
+                options: [
+                    "1966",
+                    "1967",
+                    "1968",
+                    "1969",
+                    "1970"
+                ],
+                correct: 1,
+                explanation: "Normalisasi hubungan dengan Malaysia terjadi pada 1967 dengan penandatanganan Perjanjian Jakarta, mengakhiri konfrontasi. Hubungan dengan Singapura juga dinormalisasi setelah Singapura merdeka dari Malaysia pada 1965."
+            },
+            {
+                question: "Timor Timur bergabung dengan Indonesia pada tahun?",
+                options: [
+                    "1975",
+                    "1976",
+                    "1977",
+                    "1978",
+                    "1979"
+                ],
+                correct: 1,
+                explanation: "Timor Timur secara resmi menjadi provinsi ke-27 Indonesia pada 17 Juli 1976 setelah operasi militer Indonesia (Operasi Seroja) dan deklarasi integrasi oleh APODETI pada 1975."
+            },
+            {
+                question: "Trilogi Pembangunan masa Orde Baru terdiri dari?",
+                options: [
+                    "Stabilitas, Pertumbuhan, Pemerataan",
+                    "Stabilitas, Keamanan, Kemakmuran",
+                    "Pertumbuhan, Pemerataan, Keadilan",
+                    "Keamanan, Ketertiban, Kesejahteraan",
+                    "Stabilitas, Keadilan, Kemakmuran"
+                ],
+                correct: 0,
+                explanation: "Trilogi Pembangunan adalah konsep dasar pembangunan Orde Baru yang terdiri dari: 1) Stabilitas nasional, 2) Pertumbuhan ekonomi, dan 3) Pemerataan hasil pembangunan."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let score = 0;
+        let timer;
+        let timeLeft = 30;
+
+        function startQuiz() {
+            const name = document.getElementById('studentName').value.trim();
+            const studentClass = document.getElementById('studentClass').value.trim();
+            
+            if (!name || !studentClass) {
+                alert('Mohon lengkapi nama dan kelas terlebih dahulu!');
+                return;
+            }
+            
+            document.getElementById('studentForm').classList.add('hidden');
+            document.getElementById('quizContainer').classList.remove('hidden');
+            loadQuestion();
+            startTimer();
+        }
+
+        function loadQuestion() {
+            const question = questions[currentQuestionIndex];
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            document.getElementById('questionContainer').innerHTML = `
+                <h4 class="text-xl font-semibold text-gray-800 leading-relaxed">${question.question}</h4>
+            `;
+            
+            const optionsHtml = question.options.map((option, index) => `
+                <div class="quiz-transition">
+                    <input type="radio" id="option${index}" name="answer" value="${index}" class="hidden" onchange="enableNext()">
+                    <label for="option${index}" class="block p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-red-300 hover:bg-red-50 transition-all">
+                        <span class="font-semibold text-red-600">${String.fromCharCode(65 + index)}.</span> ${option}
+                    </label>
+                </div>
+            `).join('');
+            
+            document.getElementById('optionsContainer').innerHTML = optionsHtml;
+            
+            // Update progress bar
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            // Reset timer
+            timeLeft = 30;
+            document.getElementById('timer').textContent = timeLeft;
+        }
+
+        function enableNext() {
+            document.getElementById('nextButton').disabled = false;
+        }
+
+        function startTimer() {
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    nextQuestion();
+                }
+            }, 1000);
+        }
+
+        function nextQuestion() {
+            clearInterval(timer);
+            
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+            const answerValue = selectedAnswer ? parseInt(selectedAnswer.value) : -1;
+            
+            userAnswers.push(answerValue);
+            
+            if (answerValue === questions[currentQuestionIndex].correct) {
+                score += 10;
+            }
+            
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+                startTimer();
+                document.getElementById('nextButton').disabled = true;
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quizContainer').classList.add('hidden');
+            document.getElementById('resultsContainer').classList.remove('hidden');
+            
+            document.getElementById('finalName').textContent = document.getElementById('studentName').value;
+            document.getElementById('finalClass').textContent = document.getElementById('studentClass').value;
+            document.getElementById('finalScore').textContent = score;
+            
+            // Generate review
+            let reviewHtml = '';
+            questions.forEach((question, index) => {
+                const userAnswer = userAnswers[index];
+                const isCorrect = userAnswer === question.correct;
+                const statusIcon = isCorrect ? '✅' : '❌';
+                const statusColor = isCorrect ? 'text-green-600' : 'text-red-600';
+                
+                reviewHtml += `
+                    <div class="border-l-4 ${isCorrect ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'} p-6 rounded-r-lg">
+                        <div class="flex items-start gap-3 mb-3">
+                            <span class="text-2xl">${statusIcon}</span>
+                            <div class="flex-1">
+                                <h4 class="font-bold text-gray-800 mb-2">Soal ${index + 1}: ${question.question}</h4>
+                                <p class="text-gray-700 mb-2"><strong>Jawaban Anda:</strong> 
+                                    ${userAnswer >= 0 ? question.options[userAnswer] : 'Tidak dijawab'}
+                                </p>
+                                <p class="text-green-700 mb-3"><strong>Jawaban Benar:</strong> ${question.options[question.correct]}</p>
+                                <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500">
+                                    <p class="text-gray-800"><strong>💡 Pembahasan:</strong> ${question.explanation}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('reviewQuestions').innerHTML = reviewHtml;
+        }
+
+        function toggleDiscussion() {
+            const reviewContainer = document.getElementById('reviewContainer');
+            const showDiscussionBtn = document.getElementById('showDiscussionBtn');
+            
+            if (reviewContainer.classList.contains('hidden')) {
+                reviewContainer.classList.remove('hidden');
+                showDiscussionBtn.innerHTML = '🔼 Sembunyikan Pembahasan';
+                showDiscussionBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                showDiscussionBtn.classList.add('bg-gray-600', 'hover:bg-gray-700');
+            } else {
+                reviewContainer.classList.add('hidden');
+                showDiscussionBtn.innerHTML = '📚 Lihat Pembahasan';
+                showDiscussionBtn.classList.remove('bg-gray-600', 'hover:bg-gray-700');
+                showDiscussionBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            score = 0;
+            timeLeft = 30;
+            
+            document.getElementById('resultsContainer').classList.add('hidden');
+            document.getElementById('studentForm').classList.remove('hidden');
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentClass').value = '';
+        }
+
+        // Add click effect to radio labels
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'radio' && e.target.name === 'answer') {
+                // Remove previous selection styling
+                document.querySelectorAll('label[for^="option"]').forEach(label => {
+                    label.classList.remove('border-red-500', 'bg-red-100');
+                    label.classList.add('border-gray-200');
+                });
+                
+                // Add selection styling to current choice
+                const selectedLabel = document.querySelector(`label[for="${e.target.id}"]`);
+                selectedLabel.classList.remove('border-gray-200');
+                selectedLabel.classList.add('border-red-500', 'bg-red-100');
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9862eb9b32f5e785',t:'MTc1OTA1OTE0OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
