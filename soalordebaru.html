@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal Orde Baru 1966-1998</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100%;
+        }
+        
+        html {
+            height: 100%;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .question-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .question-number {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .question-text {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .option input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+        
+        .option.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result-container {
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .score-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+        
+        .result-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .result-info p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .explanation {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .explanation h4 {
+            color: #2e7d32;
+            margin: 0 0 10px 0;
+        }
+        
+        .correct-answer {
+            background: #e8f5e8 !important;
+            border-color: #4caf50 !important;
+        }
+        
+        .wrong-answer {
+            background: #ffebee !important;
+            border-color: #f44336 !important;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📚 Latihan Soal Sejarah Indonesia</h1>
+            <p>Perkembangan Politik dan Ekonomi Indonesia Pada Masa Orde Baru (1966-1998)</p>
+        </header>
+        
+        <main class="content">
+            <div id="login-form">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h2>🔐 Masuk ke Latihan Soal</h2>
+                    <p>Silakan isi data diri Anda untuk memulai latihan soal</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="nama">Nama Lengkap:</label>
+                    <input type="text" id="nama" required placeholder="Masukkan nama lengkap Anda">
+                </div>
+                
+                <div class="form-group">
+                    <label for="kelas">Kelas:</label>
+                    <input type="text" id="kelas" required placeholder="Masukkan kelas Anda">
+                </div>
+                
+                <button class="btn" onclick="startQuiz()">Mulai Latihan Soal</button>
+            </div>
+
+            <div id="quiz-form" class="hidden">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <p><strong>Peserta:</strong> <span id="display-nama"></span> | <strong>Kelas:</strong> <span id="display-kelas"></span></p>
+                </div>
+                
+                <div id="question-progress" style="text-align: center; margin-bottom: 20px;">
+                    <span id="current-question">1</span> dari <span id="total-questions">10</span>
+                </div>
+                
+                <div id="questions-container"></div>
+                
+                <div id="navigation-buttons" style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="btn" id="prev-btn" onclick="previousQuestion()" style="background: #6c757d; flex: 1;" disabled>Sebelumnya</button>
+                    <button class="btn" id="next-btn" onclick="nextQuestion()" style="flex: 1;">Selanjutnya</button>
+                    <button class="btn hidden" id="submit-btn" onclick="submitQuiz()" style="flex: 1;">Selesai Kuis</button>
+                </div>
+            </div>
+            
+            <div id="result-container" class="result-container hidden">
+                <h2>🎉 Hasil Latihan Soal</h2>
+                <div class="result-info">
+                    <p><strong>Nama Lengkap:</strong> <span id="result-nama"></span></p>
+                    <p><strong>Kelas:</strong> <span id="result-kelas"></span></p>
+                </div>
+                <div class="score-display" id="final-score">0</div>
+                <p>dari 100 poin</p>
+                <button class="btn" onclick="showExplanations()">Lihat Pembahasan Soal</button>
+                <button class="btn" onclick="restartQuiz()" style="margin-top: 10px; background: #6c757d;">Ulangi Kuis</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Menganalisis latar belakang munculnya Tritura (Tri Tuntutan Rakyat) pada tahun 1966. Manakah pernyataan yang paling tepat mengenai dampak Tritura terhadap perubahan politik Indonesia?",
+                options: [
+                    "Memperkuat posisi PKI dalam pemerintahan Sukarno",
+                    "Menjadi dasar legitimasi Soeharto untuk mengambil alih kekuasaan secara bertahap",
+                    "Menolak segala bentuk perubahan dalam struktur pemerintahan",
+                    "Mendukung kebijakan ekonomi terpimpin Sukarno",
+                    "Memperkuat sistem demokrasi liberal di Indonesia"
+                ],
+                correct: 1,
+                explanation: "Tritura (Bubarkan PKI, Bersihkan Kabinet, Turunkan Harga) menjadi momentum penting yang memberikan legitimasi kepada Soeharto untuk melakukan perubahan politik secara bertahap, dimulai dari Supersemar hingga akhirnya mengambil alih kekuasaan penuh."
+            },
+            {
+                question: "Mengevaluasi signifikansi Surat Perintah Sebelas Maret (Supersemar) 1966 dalam konteks transisi kekuasaan. Bagaimana Supersemar mengubah dinamika politik Indonesia?",
+                options: [
+                    "Memberikan kekuasaan penuh kepada Sukarno untuk mengatasi krisis",
+                    "Mengalihkan kekuasaan eksekutif dari Sukarno kepada Soeharto secara legal-formal",
+                    "Membubarkan DPR dan MPR untuk membentuk sistem baru",
+                    "Mengembalikan sistem pemerintahan ke era kolonial Belanda",
+                    "Menetapkan sistem federal sebagai bentuk negara Indonesia"
+                ],
+                correct: 1,
+                explanation: "Supersemar secara legal-formal mengalihkan kekuasaan eksekutif dari Presiden Sukarno kepada Letjen Soeharto untuk mengambil tindakan yang dianggap perlu guna menjamin keamanan dan stabilitas pemerintahan."
+            },
+            {
+                question: "Menganalisis karakteristik Pemilu 1971 sebagai pemilu pertama di era Orde Baru. Apa yang membedakan Pemilu 1971 dengan pemilu-pemilu sebelumnya di Indonesia?",
+                options: [
+                    "Menggunakan sistem proporsional murni tanpa campur tangan pemerintah",
+                    "Didominasi oleh Golkar dengan dukungan birokrasi dan militer",
+                    "Memberikan kebebasan penuh kepada semua partai politik",
+                    "Menggunakan sistem distrik seperti di negara-negara Barat",
+                    "Hanya diikuti oleh partai-partai Islam"
+                ],
+                correct: 1,
+                explanation: "Pemilu 1971 ditandai dengan dominasi Golkar yang didukung penuh oleh birokrasi pemerintah dan militer, berbeda dengan pemilu sebelumnya yang lebih kompetitif antar partai politik."
+            },
+            {
+                question: "Mengevaluasi konsep Dwifungsi ABRI dalam sistem politik Orde Baru. Bagaimana implementasi Dwifungsi ABRI mempengaruhi struktur kekuasaan di Indonesia?",
+                options: [
+                    "Hanya berperan dalam bidang pertahanan dan keamanan",
+                    "Memiliki peran ganda dalam pertahanan-keamanan dan sosial-politik",
+                    "Dilarang terlibat dalam kegiatan politik praktis",
+                    "Hanya bertugas menjaga perbatasan negara",
+                    "Berperan sebagai oposisi terhadap pemerintah sipil"
+                ],
+                correct: 1,
+                explanation: "Dwifungsi ABRI memberikan legitimasi kepada militer untuk berperan tidak hanya dalam bidang pertahanan-keamanan, tetapi juga dalam bidang sosial-politik, termasuk duduk di lembaga legislatif dan eksekutif."
+            },
+            {
+                question: "Menganalisis kebijakan luar negeri Indonesia pada masa Orde Baru. Bagaimana perubahan orientasi kebijakan luar negeri dari era Sukarno ke era Soeharto?",
+                options: [
+                    "Dari politik konfrontasi ke politik kooperatif dengan Barat",
+                    "Dari politik bebas aktif ke politik blok Timur",
+                    "Dari kerjasama regional ke isolasi internasional",
+                    "Dari politik damai ke politik ekspansionisme",
+                    "Tidak ada perubahan signifikan dalam kebijakan luar negeri"
+                ],
+                correct: 0,
+                explanation: "Orde Baru mengubah orientasi kebijakan luar negeri dari politik konfrontasi Sukarno menjadi politik kooperatif, terutama dengan negara-negara Barat dan lembaga keuangan internasional untuk mendukung pembangunan ekonomi."
+            },
+            {
+                question: "Mengevaluasi efektivitas Trilogi Pembangunan sebagai strategi pembangunan Orde Baru. Apa yang menjadi prioritas utama dalam Trilogi Pembangunan?",
+                options: [
+                    "Stabilitas politik, pertumbuhan ekonomi, dan pemerataan hasil pembangunan",
+                    "Industrialisasi, modernisasi, dan westernisasi",
+                    "Swasembada pangan, ekspor migas, dan pariwisata",
+                    "Pendidikan, kesehatan, dan teknologi",
+                    "Demokrasi, transparansi, dan akuntabilitas"
+                ],
+                correct: 0,
+                explanation: "Trilogi Pembangunan Orde Baru menekankan tiga pilar utama: stabilitas politik sebagai prasyarat, pertumbuhan ekonomi sebagai motor, dan pemerataan hasil pembangunan sebagai tujuan akhir."
+            },
+            {
+                question: "Menganalisis peran Repelita (Rencana Pembangunan Lima Tahun) dalam strategi pembangunan ekonomi Indonesia. Bagaimana Repelita I berbeda dengan Repelita-repelita selanjutnya?",
+                options: [
+                    "Fokus pada rehabilitasi ekonomi, sedangkan Repelita selanjutnya pada industrialisasi",
+                    "Mengutamakan sektor swasta, Repelita selanjutnya sektor negara",
+                    "Berbasis pertanian, Repelita selanjutnya berbasis jasa",
+                    "Mengutamakan ekspor, Repelita selanjutnya impor substitusi",
+                    "Tidak ada perbedaan signifikan antar Repelita"
+                ],
+                correct: 0,
+                explanation: "Repelita I (1969-1974) difokuskan pada rehabilitasi dan stabilisasi ekonomi pasca krisis, sementara Repelita-repelita berikutnya lebih menekankan pada industrialisasi dan diversifikasi ekonomi."
+            },
+            {
+                question: "Mengevaluasi dampak kerjasama Indonesia dengan IMF dan Bank Dunia terhadap kebijakan ekonomi domestik. Apa konsekuensi utama dari kerjasama ini?",
+                options: [
+                    "Menjadi lebih mandiri dalam kebijakan ekonomi",
+                    "Harus menerapkan kebijakan ekonomi sesuai resep lembaga donor",
+                    "Menolak investasi asing dalam pembangunan",
+                    "Mengutamakan industri berat daripada pertanian",
+                    "Menerapkan sistem ekonomi sosialis"
+                ],
+                correct: 1,
+                explanation: "Kerjasama dengan IMF dan Bank Dunia mengharuskan Indonesia menerapkan kebijakan ekonomi yang sesuai dengan 'resep' lembaga-lembaga tersebut, termasuk liberalisasi ekonomi dan pengurangan peran negara."
+            },
+            {
+                question: "Menganalisis penyebab dan dampak krisis moneter 1997-1998 terhadap stabilitas politik Orde Baru. Faktor mana yang paling menentukan dalam memicu krisis ini?",
+                options: [
+                    "Inflasi yang tinggi akibat kebijakan fiskal yang ekspansif",
+                    "Ketergantungan pada utang luar negeri jangka pendek dan sistem nilai tukar yang kaku",
+                    "Penurunan harga minyak dunia secara drastis",
+                    "Konflik politik internal dalam tubuh pemerintahan",
+                    "Bencana alam yang merusak infrastruktur ekonomi"
+                ],
+                correct: 1,
+                explanation: "Krisis moneter 1997-1998 dipicu terutama oleh ketergantungan berlebihan pada utang luar negeri jangka pendek dan sistem nilai tukar yang kaku, yang membuat ekonomi Indonesia rentan terhadap gejolak pasar keuangan internasional."
+            },
+            {
+                question: "Mengevaluasi faktor-faktor yang menyebabkan mundurnya Soeharto pada 21 Mei 1998. Bagaimana demonstrasi mahasiswa berkontribusi terhadap berakhirnya era Orde Baru?",
+                options: [
+                    "Hanya berperan kecil, faktor ekonomi lebih dominan",
+                    "Menjadi katalis yang mempercepat krisis legitimasi politik",
+                    "Tidak berpengaruh terhadap keputusan Soeharto",
+                    "Hanya terjadi di Jakarta",
+                    "Didukung penuh oleh militer"
+                ],
+                correct: 1,
+                explanation: "Demonstrasi mahasiswa, terutama setelah Tragedi Trisakti, menjadi katalis yang mempercepat krisis legitimasi politik Soeharto. Gerakan ini meluas ke seluruh Indonesia dan mendapat dukungan berbagai elemen masyarakat, memaksa Soeharto untuk mundur."
+            }
+        ];
+
+        let userAnswers = [];
+        let showingExplanations = false;
+        let currentQuestionIndex = 0;
+
+        function initQuiz() {
+            userAnswers = new Array(questions.length).fill(null);
+            currentQuestionIndex = 0;
+            document.getElementById('total-questions').textContent = questions.length;
+            showQuestion(currentQuestionIndex);
+        }
+
+        function showQuestion(index) {
+            const container = document.getElementById('questions-container');
+            const q = questions[index];
+            
+            container.innerHTML = `
+                <div class="question-container">
+                    <div class="question-number">Soal ${index + 1}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">
+                        ${q.options.map((option, optIndex) => `
+                            <div class="option ${userAnswers[index] === optIndex ? 'selected' : ''}" onclick="selectOption(${index}, ${optIndex})">
+                                <input type="radio" name="q${index}" value="${optIndex}" id="q${index}_${optIndex}" ${userAnswers[index] === optIndex ? 'checked' : ''}>
+                                <label for="q${index}_${optIndex}">${String.fromCharCode(65 + optIndex)}. ${option}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div id="explanation-${index}" class="explanation hidden">
+                        <h4>💡 Pembahasan:</h4>
+                        <p><strong>Jawaban yang benar: ${String.fromCharCode(65 + q.correct)}. ${q.options[q.correct]}</strong></p>
+                        <p>${q.explanation}</p>
+                    </div>
+                </div>
+            `;
+            
+            // Update progress
+            document.getElementById('current-question').textContent = index + 1;
+            
+            // Update navigation buttons
+            updateNavigationButtons();
+        }
+
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            // Previous button
+            prevBtn.disabled = currentQuestionIndex === 0;
+            
+            // Next/Submit button
+            if (currentQuestionIndex === questions.length - 1) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        }
+
+        function selectOption(questionIndex, optionIndex) {
+            userAnswers[questionIndex] = optionIndex;
+            
+            // Update visual selection for current question
+            const options = document.querySelectorAll('.option');
+            
+            options.forEach((option, index) => {
+                option.classList.remove('selected');
+                const radio = option.querySelector('input[type="radio"]');
+                radio.checked = false;
+                
+                if (index === optionIndex) {
+                    option.classList.add('selected');
+                    radio.checked = true;
+                }
+            });
+        }
+
+        function startQuiz() {
+            const nama = document.getElementById('nama').value.trim();
+            const kelas = document.getElementById('kelas').value.trim();
+            
+            if (!nama || !kelas) {
+                showMessage('Mohon lengkapi nama dan kelas terlebih dahulu!', 'error');
+                return;
+            }
+            
+            // Display user info in quiz
+            document.getElementById('display-nama').textContent = nama;
+            document.getElementById('display-kelas').textContent = kelas;
+            
+            // Hide login form and show quiz
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('quiz-form').classList.remove('hidden');
+        }
+
+        function submitQuiz() {
+            const nama = document.getElementById('nama').value.trim();
+            const kelas = document.getElementById('kelas').value.trim();
+            
+            // Check if all questions are answered
+            const unansweredQuestions = [];
+            userAnswers.forEach((answer, index) => {
+                if (answer === null) {
+                    unansweredQuestions.push(index + 1);
+                }
+            });
+            
+            if (unansweredQuestions.length > 0) {
+                showMessage(`Mohon jawab soal nomor: ${unansweredQuestions.join(', ')}`, 'error');
+                return;
+            }
+            
+            // Calculate score
+            let correctAnswers = 0;
+            userAnswers.forEach((answer, index) => {
+                if (answer === questions[index].correct) {
+                    correctAnswers++;
+                }
+            });
+            
+            const score = correctAnswers * 10;
+            
+            // Show results
+            document.getElementById('result-nama').textContent = nama;
+            document.getElementById('result-kelas').textContent = kelas;
+            document.getElementById('final-score').textContent = score;
+            
+            document.getElementById('quiz-form').classList.add('hidden');
+            document.getElementById('result-container').classList.remove('hidden');
+        }
+
+        function showExplanations() {
+            if (showingExplanations) return;
+            
+            showingExplanations = true;
+            currentQuestionIndex = 0;
+            document.getElementById('quiz-form').classList.remove('hidden');
+            document.getElementById('result-container').classList.add('hidden');
+            
+            // Show first question with explanation
+            showQuestionWithExplanation(currentQuestionIndex);
+            
+            // Update navigation for explanation mode
+            updateExplanationNavigation();
+        }
+
+        function showQuestionWithExplanation(index) {
+            const container = document.getElementById('questions-container');
+            const q = questions[index];
+            
+            container.innerHTML = `
+                <div class="question-container">
+                    <div class="question-number">Soal ${index + 1}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">
+                        ${q.options.map((option, optIndex) => {
+                            let optionClass = 'option';
+                            if (optIndex === q.correct) {
+                                optionClass += ' correct-answer';
+                            } else if (optIndex === userAnswers[index] && optIndex !== q.correct) {
+                                optionClass += ' wrong-answer';
+                            } else if (optIndex === userAnswers[index]) {
+                                optionClass += ' selected';
+                            }
+                            
+                            return `
+                                <div class="${optionClass}">
+                                    <input type="radio" name="q${index}" value="${optIndex}" id="q${index}_${optIndex}" ${userAnswers[index] === optIndex ? 'checked' : ''} disabled>
+                                    <label for="q${index}_${optIndex}">${String.fromCharCode(65 + optIndex)}. ${option}</label>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    <div class="explanation">
+                        <h4>💡 Pembahasan:</h4>
+                        <p><strong>Jawaban yang benar: ${String.fromCharCode(65 + q.correct)}. ${q.options[q.correct]}</strong></p>
+                        <p>${q.explanation}</p>
+                    </div>
+                </div>
+            `;
+            
+            // Update progress
+            document.getElementById('current-question').textContent = index + 1;
+        }
+
+        function updateExplanationNavigation() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            // Previous button
+            prevBtn.disabled = currentQuestionIndex === 0;
+            prevBtn.onclick = function() {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    showQuestionWithExplanation(currentQuestionIndex);
+                    updateExplanationNavigation();
+                }
+            };
+            
+            // Next/Back to results button
+            if (currentQuestionIndex === questions.length - 1) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+                submitBtn.textContent = 'Kembali ke Hasil';
+                submitBtn.onclick = function() {
+                    document.getElementById('quiz-form').classList.add('hidden');
+                    document.getElementById('result-container').classList.remove('hidden');
+                };
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+                nextBtn.onclick = function() {
+                    if (currentQuestionIndex < questions.length - 1) {
+                        currentQuestionIndex++;
+                        showQuestionWithExplanation(currentQuestionIndex);
+                        updateExplanationNavigation();
+                    }
+                };
+            }
+        }
+
+        function showMessage(message, type) {
+            // Create message element
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 600;
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+                ${type === 'error' ? 'background: #f44336;' : 'background: #4caf50;'}
+            `;
+            messageDiv.textContent = message;
+            
+            document.body.appendChild(messageDiv);
+            
+            // Remove message after 3 seconds
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 3000);
+        }
+
+        function restartQuiz() {
+            userAnswers = [];
+            showingExplanations = false;
+            currentQuestionIndex = 0;
+            
+            document.getElementById('nama').value = '';
+            document.getElementById('kelas').value = '';
+            
+            document.getElementById('login-form').classList.remove('hidden');
+            document.getElementById('quiz-form').classList.add('hidden');
+            document.getElementById('result-container').classList.add('hidden');
+            
+            // Reset navigation buttons
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            prevBtn.onclick = previousQuestion;
+            nextBtn.onclick = nextQuestion;
+            submitBtn.onclick = submitQuiz;
+            submitBtn.textContent = 'Selesai Kuis';
+            
+            // Reinitialize quiz
+            initQuiz();
+        }
+
+        // Initialize quiz on page load
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9930262095ef6d44',t:'MTc2MTIxMTEyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
